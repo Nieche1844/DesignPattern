@@ -6,15 +6,17 @@
 class IDCareFactory : public IFactory
 {
 public:
-    IProduct *createProduct(const std::string &owner)
+    std::shared_ptr<IProduct> createProduct(const std::string &owner)
     {
-        return new IDCard(owner);
+        // 存在转换失败为null的情况
+        return std::dynamic_pointer_cast<IProduct>(std::make_shared<IDCard>(owner));
     }
-    void registerProduct(IProduct *pro)
+
+    void registerProduct(std::shared_ptr<IProduct> pro)
     {
         m_productList.push_back(pro);
     }
 
 private:
-    std::vector<IProduct *> m_productList;
+    std::vector<std::shared_ptr<IProduct>> m_productList;
 };
